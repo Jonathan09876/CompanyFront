@@ -20,41 +20,58 @@ const Header = () => {
     navigate(url)
   }
 
-  return (
-    <header>
-      <Navbar bg='success' expand='lg' collapseOnSelect>
-        <Container>
-          <LinkContainer to='/'>
-            <Navbar.Brand>Project Locator</Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls='basic-navbar-nav' />
-          <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='mx-auto'>
-              {userInfo ? (
-                <NavDropdown title={userInfo.name} id='username' className="h4 text-white font-weight-bold">
-                  <NavDropdown.Item onClick={() => {navigateToUrl('/project')}}>
-                    Projects
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => {navigateToUrl('/project/add')}}>
-                    Add Project
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <LinkContainer to='/login'>
-                  <Nav.Link>
-                    <i className='fas fa-user'></i> Sign In
-                  </Nav.Link>
-                </LinkContainer>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </header>
-  )
+    return (
+      <header>
+        <Navbar bg='success' expand='sm' collapseOnSelect>
+          <Container>
+            <LinkContainer to='/map'>
+              <Navbar.Brand>Map</Navbar.Brand>
+            </LinkContainer>
+            <LinkContainer to='/profile'>
+              <Navbar.Brand>Profile</Navbar.Brand>
+            </LinkContainer>
+            { userInfo ? ( userInfo.isAdmin ? (
+              <React.Fragment> 
+                  <LinkContainer to='/comapnanies'>
+                    <Navbar.Brand>Comapanies</Navbar.Brand>
+                  </LinkContainer>
+                  <LinkContainer to='/file_list'>
+                    <Navbar.Brand>Fiie List</Navbar.Brand>
+                  </LinkContainer>
+                  <LinkContainer to='/users'>
+                    <Navbar.Brand>Users</Navbar.Brand>
+                  </LinkContainer>
+              </React.Fragment>) : ("") ) : ("") }
+             
+                  <Navbar.Toggle aria-controls='basic-navbar-nav' />
+                  <Navbar.Collapse id='basic-navbar-nav'>
+                    <Nav className='mx-auto'>
+                    {userInfo ? (
+                  <NavDropdown title={userInfo.name} id='username' className="h4 text-white font-weight-bold">
+                    <NavDropdown.Item onClick={() => {navigateToUrl('/project')}}>
+                      Projects
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => {navigateToUrl('/project/add')}}>
+                      Add Project
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                      Logout
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                ) : (
+                  <LinkContainer to='/login'>
+                    <Nav.Link>
+                      <i className='fas fa-user'></i> Sign In
+                    </Nav.Link>
+                  </LinkContainer>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </header>
+    )
+  
 }
 
 export default Header
