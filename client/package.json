@@ -22,6 +22,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "web-vitals": "^2.1.4",
+    "xls-parser": "^3.1.0",
     "yup": "^0.32.11"
   },
   "scripts": {

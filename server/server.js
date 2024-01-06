@@ -8,6 +8,7 @@ import connectDB from './config/db.js'
 
 import projectRoutes from './routes/projectRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import companyRoutes from './routes/companyRoutes.js'
 
 dotenv.config()
 
@@ -24,6 +25,7 @@ app.use(cors())
 
 app.use('/api/projects', projectRoutes)
 app.use('/api/users', userRoutes)
+app.use('./api/company',companyRoutes)
 
 const __dirname = path.resolve()
 

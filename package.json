@@ -1,6 +1,7 @@
 {
   "name": "mern-project-locator",
   "version": "1.0.0",
+  "proxy": "http://localhost:6000",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -12,6 +13,7 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.2",
     "axios": "^0.22.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
@@ -20,10 +22,15 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-rate-limit": "^5.4.1",
+    "google-map-react": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.6",
     "morgan": "^1.10.0",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "node-xlsx": "^0.23.0",
+    "xls-parser": "^3.1.0",
+    "xls-to-json": "^2.1.1",
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
@@ -32,5 +39,4 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
-  
 }
