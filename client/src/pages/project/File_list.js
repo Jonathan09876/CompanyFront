@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { listProjectAction } from "../../actions/projectActions";
-import {listCompanyAction} from "../../actions/companyAction"
+import {FilelistAction} from "../../actions/FileAction";
 import { addDataToModel, deleteData } from './Request_api';
 import * as XLSX from 'xlsx';
 
@@ -68,7 +68,7 @@ const File_list = () => {
 
   useEffect(() => {
     if (userInfo) {
-      dispatch(listCompanyAction());
+      dispatch(FilelistAction());
     } else {
       navigate("/login");
     }
