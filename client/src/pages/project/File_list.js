@@ -1,38 +1,27 @@
 import React, { useState,useEffect } from "react";
-import { Button, Table,Input } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
-import { listProjectAction } from "../../actions/projectActions";
-import {FilelistAction} from "../../actions/FileAction";
-import { addDataToModel, deleteData } from './Request_api';
+import {FilelistAction, createFileAction} from "../../actions/FileAction";
 import * as XLSX from 'xlsx';
+import axios  from "axios";
 
 const File_list = () => {
   const dispatch = useDispatch();
   const [file, setFile] = useState('');
-  const listProject = useSelector((state) => state.projectList);
-  const { loading, error, projects } = listProject;
-
+  const [filename] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const listFile=useSelector((state) => state.fileList);
+  const {filelist,loading, error }=listFile
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  
-  const addData = (data, name) => {
-    console.log(data, name);
+   
 
-    addDataToModel(data, name).then((data) => {
-      if (data) {
-        console.log('yes');
-        setFile('');
-      } else {
-        console.log('no');
-      }
-    });
-  };
-  const filePathset=(e)=> {
-      e.preventDefault();
+  const filede=(e)=>
+  {
       var file = e.target.files[0];
       setFile(file);
 
@@ -45,7 +34,7 @@ const File_list = () => {
         /* Parse data */
         const bstr = evt.target.result;
         const wb = XLSX.read(bstr, { type: 'binary' });
-
+      
         wb.SheetNames.forEach(function (sheetName) {
           var name = sheetName.toLowerCase();
           var XL_row_object = XLSX.utils.sheet_to_row_object_array(
@@ -53,16 +42,46 @@ const File_list = () => {
           );
           if(XL_row_object.length>1)
           {
-             var json_object = JSON.stringify(XL_row_object);
-             addData(json_object, name);
+            const payload = JSON.stringify(XL_row_object);
+            
+            //  dispatch(insertlistTemperAction(payload));
           }
-         
+        
           
         });
       };
       reader.readAsBinaryString(f);
       alert(`sheets Added Succesfully!`);
     }
+  }
+
+  const filesubmit =(e)=>{
+     e.preventDefault();
+     const selectedFile=e.target.files[0]
+     const data = new FormData();
+     data.append("file", selectedFile);
+     console.log(data.get("file"))
+     const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { dataer } = axios.post(`http://localhost:5000/api/file/upload`, {body:data} ,config,)
+    //  axios
+    //  .post("https://localhost:5000/api/file/upload", data)
+    //  .then(res => {
+    //     console.log(res.statusText);
+    //     alert("success");
+    //  })
+    //  .catch(err => {
+    //     console.log(err);
+    //  });
+
+     const payload = {
+      filename
+    }
+    payload.filename=e.target.value;
+    dispatch(createFileAction(payload));
   }
   const navigate = useNavigate();
 
@@ -83,8 +102,7 @@ const File_list = () => {
           type="file"
           label="File Upload"
           accept=".xls,xlsx"
-          // validators={[VALIDATOR_REQUIRE()]}
-          onChange={ (e) => filePathset(e)} />
+          onChange={ (e) => filesubmit(e)} />
             <br />
       {loading ? (
         <Loader />
@@ -102,19 +120,20 @@ const File_list = () => {
             </tr>
           </thead>
           <tbody>
-            {projects.map((project) => (
-              <tr key={project._id}>
-                <td>{project._id}</td>
-                <td>{project.name}</td>
-                <td>{project.details}</td>
-                <td>{project.startDate}</td>
-                <td>{project.endDate}</td>
+            {filelist.map((list) => (
+              <tr key={list._id}>
+                <td>{list._id}</td>
+                <td>{list.filename}</td>
+                <td>{list.updatedAt}</td>
+                <td> { list.status ? (<div className='badge rounded-pill bg-success'>read</div>) : (<div className='badge rounded-pill bg-danger'>unread</div>)}</td>
+                <td> { list.status ? ("") : (<div className='btn btn-sm rounded-pill btn-info'>add</div>)}</td>
                 <td>
-                  <LinkContainer to={`/project/${project._id}`}>
+                { list.status ? ( <LinkContainer to={`/project/${list._id}`}>
                     <Button variant="light" className="btn-sm">
-                      Details
+                      Delete
                     </Button>
-                  </LinkContainer>
+                  </LinkContainer>) : ("")}
+                 
                 </td>
               </tr>
             ))}

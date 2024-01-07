@@ -1,4 +1,5 @@
 import express from 'express'
+
 const router = express.Router()
 import {
   authUser,
@@ -7,14 +8,20 @@ import {
   updateUserProfile,
   getUsers,
 } from '../controllers/userController.js'
-import {getAllFiles } from "../controllers/fileController.js"
+import { uploadFile } from "../controllers/uploadController.js"
+import {getAllFiles,createFiles} from "../controllers/fileController.js"
 import { protect, admin, limiter } from '../middleware/authMiddleware.js'
-
 router.route('/').post(getAllFiles).get(limiter, getUsers)
-router.post('/list', getAllFiles)
 router
   .route('/list')
   .post(protect, getAllFiles)
+router
+  .route('/upload')
+  .post(protect, uploadFile)
+
+ router
+  .route('/create')
+  .post(protect, createFiles)
 router
   .route('/profile')
   .get(protect, getUserProfile)

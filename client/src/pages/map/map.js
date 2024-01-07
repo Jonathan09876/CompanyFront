@@ -1,6 +1,7 @@
 import React from "react";
 import GoogleMapReact from 'google-map-react';
 import { Loader } from "@googlemaps/js-api-loader"
+import ReactGoogleAutocomplete from "react-google-autocomplete";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -17,7 +18,7 @@ export default function SimpleMap(){
     // Important! Always set the container height explicitly
     <div style={{ height: '100vh', width: '100%' }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "" }}
+        bootstrapURLKeys={{ key: "AIzaSyBnTT3UnzXYJjckd7Zgo42Cipy7n9AdPSQ" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >

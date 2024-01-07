@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const filesShema = mongoose.Schema(
   {
-    fileName: {
+    filename: {
       type: String,
       required: [true, "Project Name is a required field"],
     },
@@ -13,6 +13,7 @@ const filesShema = mongoose.Schema(
     Status: {
       type: Number,
       required: false,
+      default: false,
     },
   },
   {
@@ -20,6 +21,6 @@ const filesShema = mongoose.Schema(
   }
 );
 
-const Project = mongoose.model("File", filesShema);
+const File = mongoose.model("File", filesShema);
 
-export default Project;
+export default File;

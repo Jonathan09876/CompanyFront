@@ -4,13 +4,15 @@ import {
   FILE_CREATE_SUCCESS,
   FILE_CREATE_FAIL,
   FILE_CREATE_RESET,
+
   FILE_LIST_REUQEST,
   FILE_LIST_FAIL,
-  FILE_LIST_SUCCESS
+  FILE_LIST_SUCCESS,
+
+ 
 } from '../constants/fileConstant'
 
 import { logout } from './userActions'
-
 
 export const createFileAction = (payload) => async (dispatch, getState) => {
   try {
@@ -27,7 +29,7 @@ export const createFileAction = (payload) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
-    
+   
     const { data } = await axios.post(`http://localhost:5000/api/file/create`, payload, config,)
 
     dispatch({
@@ -105,11 +107,10 @@ export const FilelistAction = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
-
-    const { data } = await axios.post(`http://localhost:5000/api/file/list`, config)
+    const { data } = await axios.post(`http://localhost:5000/api/file/list`, '',config,)
     dispatch({
       type: FILE_LIST_SUCCESS,
-      payload: data.projects,
+      payload: data.filelist,
     })
   } catch (error) {
     const message =

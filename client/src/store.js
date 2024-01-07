@@ -21,14 +21,9 @@ import {
 
 } from './reducers/projectReducers'
 
-
 import {
-  // createFileReducer,
-  updateProjectReducer,
-  projectDeleteReducer,
-  projectListReducer,
-  projectDetailsReducer,
-
+   createFileReducer,
+   fileListReducer,
 } from './reducers/fileReducer'
 
 const reducer = combineReducers({
@@ -45,6 +40,9 @@ const reducer = combineReducers({
   projectDetails: projectDetailsReducer,
   projectList: projectListReducer,
   projectDelete: projectDeleteReducer,
+
+  createFile: createFileReducer,
+  fileList:fileListReducer,
 
 
 })
