@@ -1,3 +1,4 @@
+
 import {
   FILE_CREATE_REQUEST,
   FILE_CREATE_SUCCESS,
@@ -57,14 +58,12 @@ import {
   
   export const fileListReducer = (state = { filelist: [] }, action) => {
     switch (action.type) {
-      case FILE_LIST_REUQEST:
-        return { loading: true }
       case FILE_LIST_SUCCESS:
         return { loading: false, filelist: action.payload }
       case FILE_LIST_FAIL:
         return { loading: false, error: action.payload }
       case FILE_LIST_RESET:
-        return { projects: [] }
+        return { filelist: [] }
       default:
         return state
     }

@@ -7,7 +7,7 @@ import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
 import { getProjectDetails, updateProjectAction, deleteProjectAction } from "../../actions/projectActions";
-
+import GoogleMapComponent from "../../components/MapComponent";
 
 const UpdateProject = ({ history }) => {
   const [show, setShow] = useState(false);
@@ -157,7 +157,7 @@ const UpdateProject = ({ history }) => {
         </Modal.Footer>
       </Modal>
 
-      {/* <GoogleMapComponent
+      <GoogleMapComponent
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
         loadingElement={<div style={{ height: `100%` }} />}
@@ -166,7 +166,7 @@ const UpdateProject = ({ history }) => {
         onMarkerClick={onMarkerClick}
         latitude={latitude}
         longitude={longitude}
-      /> */}
+      />
     </FormContainer>
   );
 };

@@ -26,6 +26,10 @@ import {
    fileListReducer,
 } from './reducers/fileReducer'
 
+import {
+  addCompanyReducer,
+} from './reducers/companyReducers'
+
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -43,6 +47,10 @@ const reducer = combineReducers({
 
   createFile: createFileReducer,
   fileList:fileListReducer,
+
+
+  addCompany:addCompanyReducer,
+  
 
 
 })

@@ -1,57 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col, Modal } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
-import { getProjectDetails, updateProjectAction, deleteProjectAction } from "../../actions/projectActions";
+import { createProjectAction } from "../../actions/projectActions";
 
-
-const UpdateProject = ({ history }) => {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+const AddProject = () => {
   const [name, setName] = useState("");
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState(25.473);
+  const [longitude, setLongitude] = useState(81.878);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [details, setDetails] = useState("");
 
   const dispatch = useDispatch();
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-  const params = useParams();
-  const navigate = useNavigate();
+  const createProject = useSelector((state) => state.createProject);
+  const { loading, success, error } = createProject;
 
-  const projectDetail = useSelector((state) => state.projectDetails);
-  const { project } = projectDetail;
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
-  const projectUpdate = useSelector((state) => state.updateProject);
-  const { loading, success, error } = projectUpdate;
+  const navigate = useNavigate()
+  
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/login')
+    }
+  }, [dispatch, userInfo])
 
-  const updateProject = () => {
+  useEffect(() => {
+    if (success) {
+      navigate('/project')
+    }
+  }, [dispatch, success])
+
+  const submitHandler = (e) => {
+    e.preventDefault();
     const payload = {
-      _id: project._id,
       name,
-      details,
+      latitude,
+      longitude,
       startDate,
       endDate,
-      latitude,
-      longitude
+      details
     }
-    dispatch(updateProjectAction(payload));
-  };
-
-  const deleteProject = () => {
-    dispatch(deleteProjectAction(project._id));
-    handleClose()
-    navigate('/project')
+    dispatch(createProjectAction(payload));
   };
 
   const onMarkerClick = (e) => {
@@ -59,35 +55,12 @@ const UpdateProject = ({ history }) => {
     setLongitude(e.latLng.lng());
   }
 
-  useEffect(() => {
-    if (success) {
-      dispatch(getProjectDetails(project._id))
-      navigate('/project')
-    }
-  }, [dispatch, success])
-
-  useEffect(() => {
-    if (!userInfo) {
-      history.push('/login')
-    }
-    if (project._id !== params.id) {
-      dispatch(getProjectDetails(params.id))
-    } else {
-      setName(project.name)
-      setLatitude(project.latitude)
-      setLongitude(project.longitude)
-      setStartDate(project.startDate)
-      setEndDate(project.endDate)
-      setDetails(project.details)
-    }
-  }, [dispatch, project])
-
   return (
     <FormContainer>
-      <h2 className="text-center my-3">Update Existing Project</h2>
+      <h2 className="text-center my-3">Add New Project</h2>
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
-      <Form>
+      <Form onSubmit={submitHandler}>
         <Form.Group controlId="email">
           <Form.Label>Project Name</Form.Label>
           <Form.Control
@@ -134,30 +107,12 @@ const UpdateProject = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button variant="primary" className="my-3" onClick={() => updateProject(project._id)}>
-          Update Project
-        </Button>
-        <Button variant="danger" className="mx-3 my-3" onClick={() => handleShow()}>
-          Delete Project
+        <Button type="submit" variant="primary" className="my-3">
+          Add New Project
         </Button>
       </Form>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Project Confirm</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, are you sure you want to delete this project ?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="danger" onClick={() => deleteProject(project._id)}>
-            Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* <GoogleMapComponent
+      <GoogleMapComponent
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
         loadingElement={<div style={{ height: `100%` }} />}
@@ -166,9 +121,9 @@ const UpdateProject = ({ history }) => {
         onMarkerClick={onMarkerClick}
         latitude={latitude}
         longitude={longitude}
-      /> */}
+      />
     </FormContainer>
   );
 };
 
-export default UpdateProject;
+export default AddProject;

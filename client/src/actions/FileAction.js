@@ -8,8 +8,6 @@ import {
   FILE_LIST_REUQEST,
   FILE_LIST_FAIL,
   FILE_LIST_SUCCESS,
-
- 
 } from '../constants/fileConstant'
 
 import { logout } from './userActions'

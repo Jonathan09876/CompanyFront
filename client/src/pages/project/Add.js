@@ -6,7 +6,7 @@ import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
 import { createProjectAction } from "../../actions/projectActions";
-import GoogleMapComponent from "../../components/MapComponent";
+// import GoogleMapComponent from "../../components/MapComponent";
 
 const AddProject = () => {
   const [name, setName] = useState("");
@@ -112,7 +112,7 @@ const AddProject = () => {
           Add New Project
         </Button>
       </Form>
-
+{/* 
       <GoogleMapComponent
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
@@ -122,7 +122,7 @@ const AddProject = () => {
         onMarkerClick={onMarkerClick}
         latitude={latitude}
         longitude={longitude}
-      />
+      /> */}
     </FormContainer>
   );
 };
