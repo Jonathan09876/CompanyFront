@@ -27,7 +27,8 @@ import {
 } from './reducers/fileReducer'
 
 import {
-  addCompanyReducer,
+  companyAddDataReducer,
+  companyGetReducer
 } from './reducers/companyReducers'
 
 const reducer = combineReducers({
@@ -48,8 +49,8 @@ const reducer = combineReducers({
   createFile: createFileReducer,
   fileList:fileListReducer,
 
-
-  addCompany:addCompanyReducer,
+  getCompanyData:companyGetReducer,
+  addCompanyData:companyAddDataReducer,
   
 
 
@@ -61,6 +62,7 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
+  getCompanyData:{companylist:"here"}
 }
 
 const middleware = [thunk]

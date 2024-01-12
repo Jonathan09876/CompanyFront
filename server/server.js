@@ -11,7 +11,6 @@ import userRoutes from './routes/userRoutes.js'
 import companyRoutes from './routes/companyRoutes.js'
 import fileRoutes from './routes/fileRoutes.js'
 
-
 dotenv.config()
 
 connectDB()
@@ -29,6 +28,7 @@ app.use('/api/projects', projectRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/company',companyRoutes)
 app.use('/api/file',fileRoutes)
+app.use('/api/company',companyRoutes)
 
 
 const __dirname = path.resolve()

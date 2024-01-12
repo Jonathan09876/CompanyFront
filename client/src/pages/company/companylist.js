@@ -1,19 +1,16 @@
 import React, { useState,useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import {  Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
-import {FilelistAction, createFileAction} from "../../actions/FileAction";
-import {addCompnayAction} from "../../actions/companyAction"
-import * as XLSX from 'xlsx';
-import axios  from "axios";
+import {addCompnayAction,getCompanyListAction} from "../../actions/companyAction"
 
 const Company_list = () => {
   const dispatch = useDispatch();
-  const Company=useSelector((state) => state.addCompany);
-  const {companylist,loading,error}=Company;
+  const listCompany=useSelector((state) => state.getCompanyData);
+  const {companylist,loading,error}=listCompany;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -22,12 +19,14 @@ const Company_list = () => {
   useEffect(() => {
     
     if (userInfo) {
+     dispatch(getCompanyListAction());
+      // console.log(companylist.companyList[0].hubs)
     } else {
       navigate("/login");
     }
   }, [dispatch, navigate, userInfo]);
-
-  return (
+ 
+  return ( 
     <>
     <br />
       {loading ? (
@@ -48,7 +47,7 @@ const Company_list = () => {
             </tr>
           </thead>
           <tbody>
-            {companylist.exceldata!=null ? companylist.exceldata.map((list) => (
+            {/* {companylist.exceldata!=null ? companylist.exceldata.map((list) => (
               <tr>
                 <td>{list.companyName}</td>
                 <td>{list.detail1}</td>
@@ -68,7 +67,7 @@ const Company_list = () => {
             <td></td>
             <td></td>
            
-          </tr>}
+          </tr>} */}
           </tbody>
         
         </Table>

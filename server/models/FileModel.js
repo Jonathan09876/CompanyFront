@@ -4,7 +4,7 @@ const filesShema = mongoose.Schema(
   {
     filename: {
       type: String,
-      required: [true, "Project Name is a required field"],
+      required: [true, "file Name is a required field"],
     },
     UploadDate: {
       type: String,

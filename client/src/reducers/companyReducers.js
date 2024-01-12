@@ -1,7 +1,12 @@
 import {
   COMPANY_LIST_SUCCESS,
   COMPANY_LIST_FAIL,
-  COMPANY_LIST_RESET
+  COMPANY_LIST_RESET,
+  COMPANY_LIST_REQUEST,
+  COMPANY_ADD_DATA,
+  COMPANY_ADD_FAIL,
+  COMPANY_ADD_RESET,
+  COMPANY_ADD_SUCCESS,
     
   } from '../constants/companyConstant'
   
@@ -49,11 +54,11 @@ import {
   //       return state
   //   }
   // }
-  export const addCompanyReducer = (state = { companylist: [] }, action) => {
+  export const companyGetReducer = (state = { companylist: [] }, action) => {
     switch (action.type) {
-      
+      case COMPANY_LIST_REQUEST:
+          return {loading : true}
       case COMPANY_LIST_SUCCESS:
-        
         return { loading: false, companylist: action.payload }
       case COMPANY_LIST_FAIL:
         return { loading: false, error: action.payload }
@@ -63,7 +68,20 @@ import {
         return state
     }
   }
-  
+  export const companyAddDataReducer = (state = { companylist: [] }, action) => {
+    switch (action.type) {
+      case COMPANY_ADD_DATA:
+          return {loading : true}
+      case COMPANY_ADD_SUCCESS:
+        return { loading: false, companylist: action.payload }
+      case COMPANY_ADD_FAIL:
+        return { loading: false, error: action.payload }
+      case COMPANY_ADD_RESET:
+        return { companylist: [] }
+      default:
+        return state
+    }
+  }
   // export const projectDeleteReducer = (state = {}, action) => {
   //   switch (action.type) {
   //     case PROJECT_DELETE_REQUEST:

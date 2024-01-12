@@ -1,120 +1,46 @@
 import React, { useState,useEffect } from "react";
+import {connect} from 'react-redux';
 import { Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
-import {FilelistAction, createFileAction} from "../../actions/FileAction";
+import {FilelistAction} from "../../actions/FileAction";
 import {addCompnayAction} from "../../actions/companyAction"
-import * as XLSX from 'xlsx';
-import axios  from "axios";
-import DetailShow from "../map/DetailShow";
 const File_list = () => {
   const dispatch = useDispatch();
-  const [file, setFile] = useState('');
-  const [filename,data,] = useState('',[{sheetname:'',exceldata:[]}]);
   const listFile=useSelector((state) => state.fileList);
-  const Company=useSelector((state) => state.addCompany);
-  const {companylist}=Company;
-  const {filelist,loading, error }=listFile
+  const {filelist,loading, error }=listFile;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-   
-
-  // const filede=(e)=>
-  // {
-  //     var file = e.target.files[0];
-  //     setFile(file);
-
-  //     if (file === '') {
-  //       alert('Insert some file');
-  //     } else {
-  //     var f = file;
-  //     const reader = new FileReader();
-  //     reader.onload = (evt) => {
-  //       /* Parse data */
-  //       const bstr = evt.target.result;
-  //       const wb = XLSX.read(bstr, { type: 'binary' });
-      
-  //       wb.SheetNames.forEach(function (sheetName) {
-  //         var name = sheetName.toLowerCase();
-  //         var XL_row_object = XLSX.utils.sheet_to_row_object_array(
-  //           wb.Sheets[sheetName]
-  //         );
-  //         if(XL_row_object.length>1)
-  //         {
-  //           const payload = JSON.stringify(XL_row_object);
-            
-  //           //  dispatch(insertlistTemperAction(payload));
-  //         }
-        
-          
-  //       });
-  //     };
-  //     reader.readAsBinaryString(f);
-  //     alert(`sheets Added Succesfully!`);
-  //   }
-  // }
-
+  const navigate = useNavigate();
+  const addCompnayData=(dataName)=>
+  {
+    dispatch(addCompnayAction(dataName));
+  }
   const filesubmit =(e)=>{
      e.preventDefault();
      const selectedFile=e.target.files[0]
-    
-     if (selectedFile === '') {
-      alert('Insert some file');
-    } else {
-      var f = selectedFile;
-
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        /* Parse data */
-        const bstr = evt.target.result;
-        const wb = XLSX.read(bstr, { type: 'binary' });
-       
-        
-        wb.SheetNames.forEach(function (sheetName) {
-          // console.log(sheetName);
-          var name = sheetName.toLowerCase();
-          var XL_row_object = XLSX.utils.sheet_to_row_object_array(
-            wb.Sheets[sheetName]
-          );       
-          if(XL_row_object.length!=0)
-          {
-            data.sheetname=name;
-            data.exceldata=XL_row_object;
-          }         
-      });
-      dispatch(addCompnayAction(data));
-      };
-      reader.readAsBinaryString(f);
-    }
-     const data = new FormData();
-     data.append("file", selectedFile);
+     const formdata = new FormData();
+     formdata.append("xlsx", selectedFile);
      const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
-    const { dataer } = axios.post(`http://localhost:5000/api/file/upload`, {body:data} ,config,)
-    //  axios
-    //  .post("https://localhost:5000/api/file/upload", data)
-    //  .then(res => {
-    //     console.log(res.statusText);
-    //     alert("success");
-    //  })
-    //  .catch(err => {
-    //     console.log(err);
-    //  });
-
-     const payload = {
-      filename
-    }
-    payload.filename=e.target.value;
-    dispatch(createFileAction(payload));
+     }
+    fetch("http://localhost:5000/api/file/upload", { // Your POST endpoint
+      method: 'POST',
+      body: formdata,
+      headers:config.headers
+    }).then(
+      dispatch(FilelistAction())
+    ).catch(
+      error => console.log("Test failed: " + error) // Handle the error response object
+    );
   }
-  const navigate = useNavigate();
-
+ 
+  
   useEffect(() => {
     if (userInfo) {
       dispatch(FilelistAction());
@@ -156,7 +82,7 @@ const File_list = () => {
                 <td>{list.filename}</td>
                 <td>{list.updatedAt}</td>
                 <td> { list.status ? (<div className='badge rounded-pill bg-success'>read</div>) : (<div className='badge rounded-pill bg-danger'>unread</div>)}</td>
-                <td> { list.status ? ("") : (<div className='btn btn-sm rounded-pill btn-info'>add</div>)}</td>
+                <td> { list.status ? ("") : (<button className='btn btn-sm rounded-pill btn-info' onClick={() =>addCompnayData(list.filename)}>add</button>)}</td>
                 <td>
                 { list.status ? ( <LinkContainer to={`/project/${list._id}`}>
                     <Button variant="light" className="btn-sm">
@@ -176,4 +102,15 @@ const File_list = () => {
   );
  
 };
+// const mapStateToProps = (state) => {
+//   return {
+//       companylister: state.addCompanyData
+//   }
+// }
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//       addCompanyData: () => { dispatch(addCompnayAction())}
+//   }
+// }
+// export default connect(mapStateToProps, mapDispatchToProps)(File_list);
 export default File_list;
