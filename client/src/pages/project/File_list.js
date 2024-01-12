@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import {connect} from 'react-redux';
+// import {connect,mapDispatchToProps,mapDispatchToProps} from 'react-redux';
 import { Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
@@ -34,7 +34,7 @@ const File_list = () => {
       body: formdata,
       headers:config.headers
     }).then(
-      dispatch(FilelistAction())
+     dispatch(FilelistAction())
     ).catch(
       error => console.log("Test failed: " + error) // Handle the error response object
     );
@@ -81,8 +81,8 @@ const File_list = () => {
                 <td>{list._id}</td>
                 <td>{list.filename}</td>
                 <td>{list.updatedAt}</td>
-                <td> { list.status ? (<div className='badge rounded-pill bg-success'>read</div>) : (<div className='badge rounded-pill bg-danger'>unread</div>)}</td>
-                <td> { list.status ? ("") : (<button className='btn btn-sm rounded-pill btn-info' onClick={() =>addCompnayData(list.filename)}>add</button>)}</td>
+                <td> { list.Status ? (<div className='badge rounded-pill bg-success'>read</div>) : (<div className='badge rounded-pill bg-danger'>unread</div>)}</td>
+                <td> { list.Status ? ("") : (<button className='btn btn-sm rounded-pill btn-info' onClick={() =>addCompnayData(list.filename)}>add</button>)}</td>
                 <td>
                 { list.status ? ( <LinkContainer to={`/project/${list._id}`}>
                     <Button variant="light" className="btn-sm">
@@ -102,9 +102,20 @@ const File_list = () => {
   );
  
 };
+// const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
+//   counter: state.counterDetails.counter
+// });
+
+// const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = ({
+//   increaseValueByAmount,
+//   decreaseValueByAmount,
+//   resetValue
+// });
+
 // const mapStateToProps = (state) => {
+//   const {fileList}=state.fileList
 //   return {
-//       companylister: state.addCompanyData
+//       filelist: fileList
 //   }
 // }
 // const mapDispatchToProps = (dispatch) => {

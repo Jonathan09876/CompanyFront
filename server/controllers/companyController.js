@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import xlsx from "xlsx"
 import Company from '../models/CompanyModel.js'
+import File from '../models/FileModel.js'
 import { geocode, RequestType,setDefaults } from "react-geocode";
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -92,7 +93,15 @@ const addCompany = asyncHandler(async (req, res) => {
   if(result)
   {
     const companyList = await Company.find({ }).sort({updatedAt: -1});
-     return res.json(companyList)
+    const updateReault=await File.updateOne({'filename':req.body.body},{$set:{'Status':true}},{multi:true});
+    console.log(updateReault)
+    if (updateReault) {
+      return res.json(companyList)
+    } else {
+      res.status(401)
+      throw new Error('Invalid file data')
+    }
+    
   }
 })
 const getCompany = asyncHandler(async (req,res)=>{

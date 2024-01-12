@@ -19,19 +19,43 @@ const MarkerInfoWindow = () => {
   const {companylist,loading,error}=listCompany;
   const userLogin = useSelector((state) => state.userLogin);
   const [show,setShow] = useState(false);
+  const [childshow,setChildshow] = useState(false);
   const [currentMother,setCurrentMother] = useState(false);
   const { userInfo } = userLogin;
+  const [currentChild,setCurrentChild]=useState(false);
   let hubs= new Array();
 
   const onChildClickCallback = (key) => {
     
     const index = companylist.findIndex((e) => e._id === key);
-    setCurrentMother(companylist[index]);
-    setShow(true);
+    
+    if(index==null || index==undefined || index==-1)
+    {
+        setChildshow(true);
+        const keynumber=Number(key)
+        const indexChild= hubs.findIndex((e) => e.id === keynumber);
+        setCurrentChild(hubs[indexChild])
+    }
+    else
+    {
+      setCurrentMother(companylist[index]);
+      setShow(true);
+    }
+   
+    
+
   };
-  const onClosedetail=()=>
+  const onClosedetail=(type)=>
   {
-    setShow(false)
+    if(type=="child")
+    {
+      setChildshow(false);
+    }
+    else
+    {
+      setShow(false)
+    }
+   
   }
   useEffect(() => {
     
@@ -63,6 +87,7 @@ const MarkerInfoWindow = () => {
           hubs[count].id=randomnum;
           hubs[count].roundColor=companylist[i].roundColor;
           hubs[count].color=companylist[i].color;
+          hubs[count].hq=companylist[i].companyName
           count++;
         }
       }
@@ -104,7 +129,8 @@ const MarkerInfoWindow = () => {
           </GoogleMap>
           
         )}
-         {show && <DetailShow onClosedetail={onClosedetail}list={currentMother} show={show}/> }
+         {show && <DetailShow onClosedetail={onClosedetail} list={currentMother} show={show} child={false}/> }
+         {childshow && <DetailShow onClosedetail={onClosedetail} list={currentChild} show={show} child={true}/> }
       </div>
     );
   }

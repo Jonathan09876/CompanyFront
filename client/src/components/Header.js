@@ -48,12 +48,6 @@ const Header = () => {
                     <Nav className='mx-auto'>
                     {userInfo ? (
                   <NavDropdown title={userInfo.name} id='username' className="h4 text-white font-weight-bold">
-                    <NavDropdown.Item onClick={() => {navigateToUrl('/project')}}>
-                      Projects
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => {navigateToUrl('/project/add')}}>
-                      Add Project
-                    </NavDropdown.Item>
                     <NavDropdown.Item onClick={logoutHandler}>
                       Logout
                     </NavDropdown.Item>

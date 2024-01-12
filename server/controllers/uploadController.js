@@ -5,6 +5,7 @@ const uploadFile = asyncHandler(async (req, res)=>{
       const  filename = req.file.originalname
       var UploadDate = new Date();
       const existFile= await File.find({filename: filename})
+      console.log(existFile)
       if(existFile==[] || !existFile || existFile=="")
       {
           const file = await File.create({
@@ -13,7 +14,7 @@ const uploadFile = asyncHandler(async (req, res)=>{
           })
     
           if (file) {
-            res.send({ status: "success", message: `${req.file.originalname} uploaded!` })
+            res.send({ status: "success", message: `${req.file.originalname} aa!` })
             
           } else {
             res.status(401)

@@ -10,12 +10,12 @@ import {
   FILE_LIST_RESET,
   } from '../constants/fileConstant'
   
-  export const createFileReducer = (state = {}, action) => {
+  export const createFileReducer = (state = { filelist: [] }, action) => {
     switch (action.type) {
       case FILE_CREATE_REQUEST:
         return { loading: true }
       case FILE_CREATE_SUCCESS:
-        return { loading: false, success: true, project: action.payload }
+        return { loading: false, success: true, filelist: action.payload }
       case FILE_CREATE_FAIL:
         return { loading: false, error: action.payload }
       case FILE_CREATE_RESET:

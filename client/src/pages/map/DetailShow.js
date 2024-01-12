@@ -11,32 +11,65 @@ const DetailShow = ({children,...props })  => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userInfo } = userLogin;
+  const child=props.child;
   const style={
     height:"956px",
     top:"119px"
 
   }
-  
-
+  const childstyle=
+  {
+    height: "250px",
+    top: "534px",
+    margin: "auto",
+    width: "500px",
+  }
   const handleClose=()=>
   {
+
     setClassstyle("offcanvas offcanvas-end bg-success");
-    props.onClosedetail()
-  }
-  const handleShow=()=>
-  {
-    
+    if(child==true)
+    {
+      props.onClosedetail("child")
+    }
+    else
+    {
+      props.onClosedetail("mother")
+    }
   }
   useEffect(() => {
-    setClassstyle("offcanvas offcanvas-end bg-success show")
-    let temperhubs=JSON.parse(props.list.hubs)
-    console.log(temperhubs)
-    setHubs(temperhubs);
-    console.log(hubs)
+    if(child)
+    {
+      setClassstyle("offcanvas offcanvas-bottom bg-info show")
+    }
+    else
+    {
+      setClassstyle("offcanvas offcanvas-end bg-success show")
+      let temperhubs=JSON.parse(props.list.hubs)
+      console.log(temperhubs)
+      setHubs(temperhubs);
+      console.log(hubs)
+    }
+   
   }, [dispatch, navigate,userInfo]);
   return (
     <>
-    {!isEmpty(hubs) && (
+    {child ?
+      <div className={classstyle} style={child?childstyle:style} id="demo">
+        <div className="offcanvas-header">
+          <h1 className="offcanvas-title">{props.list.name} (hub) </h1>
+          <button type="button" className="btn-close" data-bs-dismiss="offcanvas" onClick={handleClose}></button>
+        </div>
+        <div className="offcanvas-body">
+          <h6>{props.list.address}</h6>
+          <br />
+          <h6>HeadQuater: {props.list.hq}</h6>
+          <br />
+          <br />
+          <br />
+        </div>
+    </div> 
+  :(!isEmpty(hubs) && (
         <div className={classstyle} style={style} id="demo">
           <div className="offcanvas-header">
             <h1 className="offcanvas-title">{props.list.companyName}</h1>
@@ -57,7 +90,7 @@ const DetailShow = ({children,...props })  => {
             })}
           </div>
         </div>
-      )}
+      ))}
     </>
   );
 }
